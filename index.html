@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF.js Express</title>
+</head>
+<body>
+  <div id='viewer' style="width:1024px; height: 600px; margin:0 auto;"></div>
+  <script src='http://localhost:8000/lib/webviewer.min.js'></script>
+  <script>
+    let viewer = document.getElementById('viewer')
+    WebViewer({
+      path: 'http://localhost:8000/lib', // path to the PDF.js Express'lib' folder on your server
+      licenseKey: 'e4AcX8bORydRK7OqIJFV',
+      // initialDoc: 'https://media.testpress.in/Testpress_Django_Assessment_Round.pdf',
+      config: 'config.js',
+      // initialDoc: '/path/to/my/file.pdf',  // You can also use documents on your server
+    }, viewer)
+    // var x = document.getElementsByTagName("iframe")[0].contentWindow;
+    // window.postMessage("https://media.testpress.in/Testpress_Django_Assessment_Round.pdf", x);
+    viewer.addEventListener('ready', () => {
+      const iframeWindow = viewer.querySelector('iframe').contentWindow;
+      setTimeout(() => {
+        console.log("postMEssage", iframeWindow, viewer)
+        iframeWindow.postMessage({ 
+        type: 'OPEN_DOCUMENT_URL', 
+        url: 'https://media.testpress.in/Testpress_Django_Assessment_Round.pdf' 
+      }, '*')}, 2000);
+    });
+  </script>
+</body>
+</html>
